@@ -5,7 +5,6 @@ import java.io.FileInputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -62,9 +61,9 @@ public class ConfigDirUtil {
 	 */
 	public ConfigDirUtil(String configDirPath, String checksumDirPath, String rejectionsDirPath, String domain) {
 		this.domain = domain;
-		this.domainDirPath = Paths.get(configDirPath, domain).toString();
-		this.checksumDirPath = Paths.get(checksumDirPath, domain).toString();
-		this.rejectionsDirPath = Paths.get(rejectionsDirPath, domain).toString();
+		this.domainDirPath = new StringBuilder(configDirPath).append(File.separator).append(domain).toString();
+		this.checksumDirPath = new StringBuilder(checksumDirPath).append(File.separator).append(domain).toString();
+		this.rejectionsDirPath = new StringBuilder(rejectionsDirPath).append(File.separator).append(domain).toString();
 	}
 	
 	public String getDomain() {

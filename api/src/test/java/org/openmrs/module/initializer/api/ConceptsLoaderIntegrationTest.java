@@ -28,12 +28,14 @@ import org.openmrs.ConceptAttribute;
 import org.openmrs.ConceptComplex;
 import org.openmrs.ConceptMap;
 import org.openmrs.ConceptNumeric;
+import org.openmrs.GlobalProperty;
 import org.openmrs.LocationAttribute;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.context.Context;
 import org.openmrs.customdatatype.datatype.DateDatatype;
 import org.openmrs.module.initializer.DomainBaseModuleContextSensitiveTest;
 import org.openmrs.module.initializer.api.c.ConceptsLoader;
+import org.openmrs.util.OpenmrsConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
@@ -57,6 +59,7 @@ public class ConceptsLoaderIntegrationTest extends DomainBaseModuleContextSensit
 	public void setup() throws Exception {
 		executeDataSet("testdata/test-concepts.xml");
 		executeDataSet("testdata/test-concepts-numeric.xml");
+		Context.getAdministrationService().setGlobalProperty(OpenmrsConstants.GLOBAL_PROPERTY_LOCALE_ALLOWED_LIST, "en_GB,km_KH");
 	}
 	
 	@Test
@@ -163,6 +166,8 @@ public class ConceptsLoaderIntegrationTest extends DomainBaseModuleContextSensit
 		{
 			Set<String> nestedUuids = new HashSet<String>(Arrays.asList(
 			    new String[] { "8bc5043c-3221-11e7-93ae-92361f002671", "8bc506bc-3221-11e7-93ae-92361f002671" }));
+			Set<String> nestedUuids2 = new HashSet<String>(Arrays.asList(
+				    new String[] { "db2f4fc4-3171-11e7-93ae-92361f002671", "db2f4d80-3171-11e7-93ae-92361f002671" }));
 			
 			// Verif question
 			c = cs.getConceptByUuid("8bc50946-3221-11e7-93ae-92361f002671");
@@ -173,6 +178,16 @@ public class ConceptsLoaderIntegrationTest extends DomainBaseModuleContextSensit
 			for (ConceptAnswer nested : c.getAnswers()) {
 				Assert.assertTrue(nestedUuids.contains(nested.getAnswerConcept().getUuid()));
 			}
+				
+				// Verif question
+				c = cs.getConceptByUuid("c90de1ea-2fea-4d2f-8b47-57a5c0004e12");
+				Assert.assertNotNull(c);
+				Assert.assertFalse(c.isSet());
+				Assert.assertFalse(CollectionUtils.isEmpty(c.getAnswers()));
+				Assert.assertEquals(2, c.getAnswers().size());
+				for (ConceptAnswer nested : c.getAnswers()) {
+					Assert.assertTrue(nestedUuids2.contains(nested.getAnswerConcept().getUuid()));
+				}
 			
 			// Verif set
 			c = cs.getConceptByUuid("c84c3f88-3221-11e7-93ae-92361f002671");
@@ -182,6 +197,14 @@ public class ConceptsLoaderIntegrationTest extends DomainBaseModuleContextSensit
 			Assert.assertEquals(2, c.getSetMembers().size());
 			for (Concept nested : c.getSetMembers()) {
 				Assert.assertTrue(nestedUuids.contains(nested.getUuid()));
+			}
+			c = cs.getConceptByUuid("eeb255e3-e6a0-41f1-8271-9ed12e13afba");
+			Assert.assertNotNull(c);
+			Assert.assertTrue(c.isSet());
+			Assert.assertFalse(CollectionUtils.isEmpty(c.getSetMembers()));
+			Assert.assertEquals(2, c.getSetMembers().size());
+			for (Concept nested : c.getSetMembers()) {
+				Assert.assertTrue(nestedUuids2.contains(nested.getUuid()));
 			}
 			
 			// Verif not saved with missing answer(s) or member(s)
@@ -193,6 +216,8 @@ public class ConceptsLoaderIntegrationTest extends DomainBaseModuleContextSensit
 			Assert.assertTrue(CollectionUtils.isEmpty(c.getSetMembers()));
 			Assert.assertFalse(c.isSet());
 		}
+		
+		Context.setLocale(localeEn);
 		
 		// Verif. 'mappings' CSV loading
 		{

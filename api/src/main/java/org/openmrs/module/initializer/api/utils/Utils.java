@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
+import org.apache.commons.lang3.LocaleUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Appender;
 import org.apache.log4j.FileAppender;
@@ -44,6 +45,7 @@ import org.openmrs.api.PatientService;
 import org.openmrs.api.PersonService;
 import org.openmrs.api.ProgramWorkflowService;
 import org.openmrs.api.UserService;
+import org.openmrs.api.context.Context;
 import org.openmrs.module.appointments.model.AppointmentServiceDefinition;
 import org.openmrs.module.appointments.model.AppointmentServiceType;
 import org.openmrs.module.appointments.model.Speciality;
@@ -186,6 +188,34 @@ public class Utils {
 	}
 	
 	/**
+	 * @param name The concept name, e.g "cambodia"
+	 * @param service
+	 * @return The {@link Concept} instance if found, null otherwise.
+	 */
+	public static Concept getConceptByName(String name, ConceptService service) {
+		Concept instance = null;
+		if (StringUtils.isEmpty(name)) {
+			return instance;
+		}
+		instance = service.getConceptByName(name);
+		if (instance != null) {
+			return instance;
+		}
+		Locale currentLocal = Context.getLocale();
+		List<Locale> otherAllowedLocales = new ArrayList<>(Context.getAdministrationService().getAllowedLocales());
+		otherAllowedLocales.removeIf(l -> l.equals(currentLocal));
+		for (Locale locale : otherAllowedLocales) {
+			Context.setLocale(locale);
+			instance = service.getConceptByName(name);
+			if (instance != null) {
+				break;
+			}
+		}
+		Context.setLocale(currentLocal);
+		return instance;
+	}
+	
+	/**
 	 * Fetches a concept trying various routes for its "id".
 	 * 
 	 * @param id The concept mapping ("cambodia:123"), concept name or concept UUID.
@@ -198,7 +228,7 @@ public class Utils {
 			instance = service.getConceptByUuid(id);
 		}
 		if (instance == null) {
-			instance = service.getConceptByName(id);
+			instance = getConceptByName(id, service);
 		}
 		if (instance == null) {
 			instance = getConceptByMapping(id, service);

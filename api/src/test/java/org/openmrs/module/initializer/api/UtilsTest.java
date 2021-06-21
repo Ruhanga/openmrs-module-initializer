@@ -180,7 +180,7 @@ public class UtilsTest {
 		
 		when(pws.getProgramByName("Program Name")).thenReturn(prog);
 		when(pws.getProgramByUuid("program-uuid")).thenReturn(prog);
-		when(Utils.fetchConcept("concept-uuid", cs)).thenReturn(c);
+		when(cs.getConceptByUuid("concept-uuid")).thenReturn(c);
 		when(pws.getProgramsByConcept(c)).thenReturn(Arrays.asList(prog));
 		
 		Assert.assertEquals(prog, Utils.fetchProgram("Program Name", pws, cs));
@@ -211,7 +211,7 @@ public class UtilsTest {
 		wf.setUuid("workflow-uuid");
 		
 		when(pws.getWorkflowByUuid("workflow-uuid")).thenReturn(wf);
-		when(Utils.fetchConcept("concept-uuid", cs)).thenReturn(c);
+		when(cs.getConceptByUuid("concept-uuid")).thenReturn(c);
 		when(pws.getProgramWorkflowsByConcept(c)).thenReturn(Arrays.asList(wf));
 		
 		Assert.assertEquals(wf, Utils.fetchProgramWorkflow("workflow-uuid", pws, cs));
@@ -241,7 +241,7 @@ public class UtilsTest {
 		state.setUuid("state-uuid");
 		
 		when(pws.getStateByUuid("state-uuid")).thenReturn(state);
-		when(Utils.fetchConcept("concept-uuid", cs)).thenReturn(c);
+		when(cs.getConceptByUuid("concept-uuid")).thenReturn(c);
 		when(pws.getProgramWorkflowStatesByConcept(c)).thenReturn(Arrays.asList(state));
 		
 		Assert.assertEquals(state, Utils.fetchProgramWorkflowState("state-uuid", pws, cs));

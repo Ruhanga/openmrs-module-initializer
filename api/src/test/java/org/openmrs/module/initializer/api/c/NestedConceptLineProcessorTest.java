@@ -4,31 +4,46 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.openmrs.Concept;
 import org.openmrs.ConceptAnswer;
+import org.openmrs.api.AdministrationService;
 import org.openmrs.api.ConceptService;
+import org.openmrs.api.context.Context;
 import org.openmrs.module.initializer.api.CsvLine;
 import org.openmrs.module.initializer.api.utils.ConceptListParser;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 /*
  * This kind of test case can be used to quickly trial the parsing routines on test CSVs
  */
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(Context.class)
 public class NestedConceptLineProcessorTest {
 	
 	private ConceptService cs = mock(ConceptService.class);
 	
 	@Before
 	public void setup() {
+		PowerMockito.mockStatic(Context.class);
+		AdministrationService as = mock(AdministrationService.class);
+		when(Context.getAdministrationService()).thenReturn(as);
+		when(as.getAllowedLocales()).thenReturn(Arrays.asList(Locale.ENGLISH, Locale.FRENCH, Locale.GERMAN));
+		when(Context.getLocale()).thenReturn(Locale.ENGLISH);
 		
 		/*
 		 * fetching a concept by mapping returns a concept with the mapping as uuid this

@@ -552,4 +552,14 @@ public class Utils {
 		}
 		return false;
 	}
+	
+	/*
+	 * Turns a proxy short class name into the original short class name.
+	 * Eg. "EncounterType$HibernateProxy$ODcBnusu" or "EncounterType_$$_javassist_26" → "EncounterType"
+	 */
+	public static String unProxy(String shortClassName) {
+	    shortClassName = StringUtils.substringBefore(shortClassName, "_$");
+	    shortClassName = StringUtils.substringBefore(shortClassName, "$");
+	    return shortClassName;
+	}
 }

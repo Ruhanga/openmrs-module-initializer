@@ -260,4 +260,11 @@ public class UtilsTest {
 		
 		Assert.assertNull(Utils.fetchProgramWorkflowState("concept-uuid", pws, cs));
 	}
+	
+	@Test
+	public void unProxy_shouldReturnOriginalClassName() {
+	    Assert.assertEquals("EncounterType", Utils.unProxy("EncounterType$HibernateProxy$ODcBnusu"));
+	    Assert.assertEquals("EncounterType", Utils.unProxy("EncounterType_$$_javassist_26"));
+	    Assert.assertEquals("EncounterType", Utils.unProxy("EncounterType"));
+	}
 }

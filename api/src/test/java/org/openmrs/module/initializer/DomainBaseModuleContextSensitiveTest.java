@@ -90,6 +90,11 @@ public abstract class DomainBaseModuleContextSensitiveTest extends BaseModuleCon
 			mod.setFile(new File(""));
 			ModuleFactory.getStartedModulesMap().put(mod.getModuleId(), mod);
 		}
+		{
+			Module mod = new Module("", "bahmnicore", "", "", "", "0.93-SNAPSHOT");
+			mod.setFile(new File(""));
+			ModuleFactory.getStartedModulesMap().put(mod.getModuleId(), mod);
+		}
 	}
 	
 	protected String getAppDataDirPath() {

@@ -34,5 +34,129 @@
 	<!-- For testing we wire the message source WITHOUT the 'init-method' -->
 	<!-- And so we also ID it differently to achieve an override within context sensitive tests. -->
 	<bean id="testInitializerMessageSource" class="org.openmrs.module.initializer.InitializerMessageSource"/>
-	
+    
+    <!-- bahmni-core related beans overridden to concentrate on those directly consumed by Iniz  -->
+    <bean name="bahmniProgramWorkflowService" class="org.bahmni.module.bahmnicore.service.impl.BahmniProgramWorkflowServiceImpl">
+        <property name="programWorkflowDAO">
+            <bean class="org.bahmni.module.bahmnicore.dao.impl.BahmniHibernateProgramWorkflowDAOImpl">
+                <property name="sessionFactory">
+                    <ref bean="sessionFactory" />
+                </property>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="bahmniEncounterTransactionService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+        <property name="transactionManager">
+            <ref bean="transactionManager"/>
+        </property>
+        <property name="target"><ref bean="bahmniEncounterTransactionServiceTarget"/></property>
+        <property name="preInterceptors">
+            <ref bean="serviceInterceptors"/>
+        </property>
+        <property name="transactionAttributeSource">
+            <ref bean="transactionAttributeSource"/>
+        </property>
+    </bean>
+
+    <bean id="bahmniEncounterTransactionServiceTarget" class="org.openmrs.module.bahmniemrapi.encountertransaction.impl.BahmniEncounterTransactionServiceImpl" autowire="constructor">
+        <constructor-arg  ref="encounterService"/>
+        <constructor-arg><null/></constructor-arg>
+        <constructor-arg><null/></constructor-arg>
+        <constructor-arg  ref="encounterTypeIdentifier"/>
+        <constructor-arg>
+            <list>
+                <null/>
+            </list>
+        </constructor-arg>
+        <constructor-arg><null/></constructor-arg>
+        <constructor-arg ref="visitService" />
+        <constructor-arg ref="patientService" />
+        <constructor-arg ref="locationService" />
+        <constructor-arg ref="providerService" />
+        <constructor-arg><null/></constructor-arg>
+    </bean>
+    
+    <bean id="bahmniObsServiceImpl" class="org.bahmni.module.bahmnicore.service.impl.BahmniObsServiceImpl" autowire="constructor">
+        <constructor-arg><null/></constructor-arg>
+        <constructor-arg><null/></constructor-arg>
+        <constructor-arg><null/></constructor-arg>
+        <constructor-arg><null/></constructor-arg>
+        <constructor-arg><null/></constructor-arg>
+        <constructor-arg><null/></constructor-arg>
+        <constructor-arg><null/></constructor-arg>
+    </bean>
+    
+    <bean id="bahmniOrderServiceImplTarget" class="org.bahmni.module.bahmnicore.service.impl.BahmniOrderServiceImpl" autowire="constructor">
+        <constructor-arg><null/></constructor-arg>
+        <constructor-arg><null/></constructor-arg>
+        <constructor-arg><null/></constructor-arg>
+    </bean>
+
+    <bean id="patientDao" class="org.bahmni.module.bahmnicore.dao.impl.PatientDaoImpl">
+        <constructor-arg><null/></constructor-arg>
+    </bean>
+
+    <bean id="bahmniPatientService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+        <property name="transactionManager">
+            <ref bean="transactionManager"/>
+        </property>
+        <property name="target">
+            <bean class="org.bahmni.module.bahmnicore.service.impl.BahmniPatientServiceImpl">
+                <constructor-arg ref="personService"/>
+                <constructor-arg ref="conceptService"/>
+                <constructor-arg ref="patientDao"/>
+            </bean>
+        </property>
+        <property name="preInterceptors">
+            <ref bean="serviceInterceptors"/>
+        </property>
+        <property name="transactionAttributeSource">
+            <ref bean="transactionAttributeSource"/>
+        </property>
+    </bean>
+    
+    <!-- Services accessible via Context.getService() -->
+    <bean parent="serviceContext">
+        <property name="moduleService">
+            <list merge="true">
+                <value>org.bahmni.module.bahmnicore.service.BahmniProgramWorkflowService</value>
+                <bean
+                        class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+                    <property name="transactionManager">
+                        <ref bean="transactionManager" />
+                    </property>
+                    <property name="target" ref="bahmniProgramWorkflowService">
+                    </property>
+                    <property name="preInterceptors">
+                        <ref bean="serviceInterceptors" />
+                    </property>
+                    <property name="transactionAttributeSource">
+                        <ref bean="transactionAttributeSource" />
+                    </property>                
+                </bean>
+            </list>
+        </property>
+    </bean>
+    
+    <bean parent="serviceContext">
+        <property name="moduleService">
+            <list merge="true">
+                <value>org.bahmni.module.bahmnicore.service.BahmniOrderService</value>
+                <bean
+                        class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+                    <property name="transactionManager">
+                        <ref bean="transactionManager" />
+                    </property>
+                    <property name="target"><ref bean="bahmniOrderServiceImplTarget"/></property>
+                    <property name="preInterceptors">
+                        <ref bean="serviceInterceptors" />
+                    </property>
+                    <property name="transactionAttributeSource">
+                        <ref bean="transactionAttributeSource" />
+                    </property>                
+                </bean>
+            </list>
+        </property>
+    </bean>
 </beans>

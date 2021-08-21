@@ -9,7 +9,7 @@ import org.openmrs.annotation.OpenmrsProfile;
 import org.openmrs.attribute.BaseAttributeType;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@OpenmrsProfile(openmrsPlatformVersion = "[2.1.1 - 2.1.*]", modules = { "bahmnicore" })
+@OpenmrsProfile(openmrsPlatformVersion = "[2.1.1 - 2.1.*]", modules = { "bahmnicore:*.*" })
 public class BahmniAttributeTypesProxyServiceImpl extends AttributeTypesProxyServiceImpl {
 	
 	@Autowired

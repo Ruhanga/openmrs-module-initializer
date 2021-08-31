@@ -2,7 +2,7 @@ package org.openmrs.module.initializer.api.display;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
-import org.openmrs.BaseOpenmrsObject;
+import org.openmrs.OpenmrsObject;
 import org.openmrs.module.initializer.Domain;
 import org.openmrs.module.initializer.api.BaseLineProcessor;
 import org.openmrs.module.initializer.api.CsvLine;
@@ -11,12 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class DisplaysCsvParser extends CsvParser<BaseOpenmrsObject, BaseLineProcessor<BaseOpenmrsObject>> {
+public class DisplaysCsvParser extends CsvParser<OpenmrsObject, BaseLineProcessor<OpenmrsObject>> {
 	
-	private CsvParser<?, ?> referenceParser;
+	private CsvParser<?, ?> bootstrapParser;
 	
-	public void setReferenceParser(CsvParser<?, ?> parser) {
-		this.referenceParser = parser;
+	public void setBootstrapParser(CsvParser<?, ?> parser) {
+		this.bootstrapParser = parser;
 	}
 	
 	@Autowired
@@ -34,12 +34,12 @@ public class DisplaysCsvParser extends CsvParser<BaseOpenmrsObject, BaseLineProc
 	 * This will result in an error
 	 */
 	@Override
-	public BaseOpenmrsObject bootstrap(CsvLine line) throws IllegalArgumentException {
-		return isBlank(line.getUuid()) ? null : (BaseOpenmrsObject) referenceParser.bootstrap(line);
+	public OpenmrsObject bootstrap(CsvLine line) throws IllegalArgumentException {
+		return isBlank(line.getUuid()) ? null : (OpenmrsObject) bootstrapParser.bootstrap(line);
 	}
 	
 	@Override
-	public BaseOpenmrsObject save(BaseOpenmrsObject instance) {
+	public OpenmrsObject save(OpenmrsObject instance) {
 		return instance;
 	}
 	

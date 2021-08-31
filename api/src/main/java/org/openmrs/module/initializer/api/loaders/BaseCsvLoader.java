@@ -66,7 +66,7 @@ public abstract class BaseCsvLoader<T extends OpenmrsObject, P extends CsvParser
 	protected File preload(File file) {
 		
 		try {
-			displaysLoader.setReferenceParser(parser);
+			displaysLoader.setBootstrapParser(parser);
 			displaysLoader.load(file);
 		}
 		catch (Exception e) {

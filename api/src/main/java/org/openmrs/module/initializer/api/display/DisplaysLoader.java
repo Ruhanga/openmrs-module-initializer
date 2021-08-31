@@ -1,13 +1,13 @@
 package org.openmrs.module.initializer.api.display;
 
-import org.openmrs.BaseOpenmrsObject;
+import org.openmrs.OpenmrsObject;
 import org.openmrs.module.initializer.api.CsvParser;
 import org.openmrs.module.initializer.api.loaders.BaseCsvLoader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class DisplaysLoader extends BaseCsvLoader<BaseOpenmrsObject, DisplaysCsvParser> {
+public class DisplaysLoader extends BaseCsvLoader<OpenmrsObject, DisplaysCsvParser> {
 	
 	@Override
 	public void setDisplaysLoader(DisplaysLoader displaysLoader) {
@@ -18,8 +18,8 @@ public class DisplaysLoader extends BaseCsvLoader<BaseOpenmrsObject, DisplaysCsv
 		this.parser = parser;
 	}
 	
-	public void setReferenceParser(CsvParser<?, ?> parser) {
-		this.parser.setReferenceParser(parser);
+	public void setBootstrapParser(CsvParser<?, ?> parser) {
+		this.parser.setBootstrapParser(parser);
 	}
 	
 }

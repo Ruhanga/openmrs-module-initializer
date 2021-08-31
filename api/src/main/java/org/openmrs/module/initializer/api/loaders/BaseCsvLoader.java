@@ -8,7 +8,7 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.openmrs.BaseOpenmrsObject;
+import org.openmrs.OpenmrsObject;
 import org.openmrs.module.initializer.Domain;
 import org.openmrs.module.initializer.api.BaseLineProcessor;
 import org.openmrs.module.initializer.api.ConfigDirUtil;
@@ -17,7 +17,9 @@ import org.openmrs.module.initializer.api.CsvLine;
 import org.openmrs.module.initializer.api.CsvParser;
 import org.openmrs.module.initializer.api.OrderedCsvFile;
 import org.openmrs.module.initializer.api.OrderedFile;
+import org.openmrs.module.initializer.api.display.DisplaysLoader;
 import org.openmrs.module.initializer.api.utils.Utils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * All CSV loaders should subclass the base CSV loader. This class takes care of loading and sorting
@@ -25,9 +27,16 @@ import org.openmrs.module.initializer.api.utils.Utils;
  * 
  * @param <T>
  */
-public abstract class BaseCsvLoader<T extends BaseOpenmrsObject, P extends CsvParser<T, BaseLineProcessor<T>>> extends BaseInputStreamLoader implements CsvLoader/* <P> */ {
+public abstract class BaseCsvLoader<T extends OpenmrsObject, P extends CsvParser<T, BaseLineProcessor<T>>> extends BaseInputStreamLoader implements CsvLoader/* <P> */ {
 	
 	protected P parser;
+	
+	private DisplaysLoader displaysLoader;
+	
+	@Autowired
+	public void setDisplaysLoader(DisplaysLoader displaysLoader) {
+		this.displaysLoader = displaysLoader;
+	}
 	
 	@Override
 	protected Domain getDomain() {
@@ -46,8 +55,26 @@ public abstract class BaseCsvLoader<T extends BaseOpenmrsObject, P extends CsvPa
 	}
 	
 	@Override
-	public OrderedFile newOrderedFile(File file) {
+	public OrderedFile toOrderedFile(File file) {
 		return new OrderedCsvFile(file);
+	}
+	
+	/**
+	 * By default CSV loaders run DisplaysLoader in their pre-loading phase.
+	 */
+	@Override
+	protected File preload(File file) {
+		
+		try {
+			displaysLoader.setReferenceParser(parser);
+			displaysLoader.load(file);
+		}
+		catch (Exception e) {
+			log.error(
+			    "The pre-loading of the '" + getDomainName() + "' CSV configuration file was aborted:\n" + file.getPath(),
+			    e);
+		}
+		return file;
 	}
 	
 	@Override

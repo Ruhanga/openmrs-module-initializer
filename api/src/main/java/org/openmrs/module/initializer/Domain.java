@@ -4,6 +4,7 @@ import org.apache.commons.lang.ArrayUtils;
 
 public enum Domain {
 	
+	DISPLAYS,
 	JSON_KEY_VALUES,
 	CONCEPT_CLASSES,
 	CONCEPT_SOURCES,

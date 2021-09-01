@@ -27,7 +27,7 @@ public class DisplaysCsvParser extends CsvParser<OpenmrsObject, BaseLineProcesso
 	
 	@Override
 	public Domain getDomain() {
-		return Domain.PRE_DISPLAYS;
+		return null;
 	}
 	
 	/*

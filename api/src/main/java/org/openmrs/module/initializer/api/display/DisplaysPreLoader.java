@@ -11,13 +11,28 @@ import org.springframework.stereotype.Component;
 public class DisplaysPreLoader extends BaseCsvLoader<OpenmrsObject, DisplaysCsvParser> {
 	
 	@Override
-	public void setDisplaysPreLoader(DisplaysPreLoader displaysLoader) {
-		// this override prevents the parent's method Spring autowiring that would result in a cyclic bean creation error.
+	public boolean isPreLoader() {
+		return true;
+	}
+	
+	@Override
+	public String getDomainName() {
+		return "displays";
+	}
+	
+	@Override
+	public Integer getOrder() {
+		return 0;
 	}
 	
 	@Autowired
 	public void setParser(DisplaysCsvParser parser) {
 		this.parser = parser;
+	}
+	
+	@Override
+	public void setDisplaysPreLoader(DisplaysPreLoader displaysLoader) {
+		// this override prevents the parent's method Spring autowiring that would result in a cyclic bean creation error.
 	}
 	
 	public void setBootstrapParser(

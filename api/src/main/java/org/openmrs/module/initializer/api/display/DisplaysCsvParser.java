@@ -15,7 +15,8 @@ public class DisplaysCsvParser extends CsvParser<OpenmrsObject, BaseLineProcesso
 	
 	private CsvParser<? extends OpenmrsObject, ? extends BaseLineProcessor<? extends OpenmrsObject>> bootstrapParser;
 	
-	public void setBootstrapParser(CsvParser<?, ?> parser) {
+	public void setBootstrapParser(
+	        CsvParser<? extends OpenmrsObject, ? extends BaseLineProcessor<? extends OpenmrsObject>> parser) {
 		this.bootstrapParser = parser;
 	}
 	

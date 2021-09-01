@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class DisplaysCsvParser extends CsvParser<OpenmrsObject, BaseLineProcessor<OpenmrsObject>> {
 	
-	private CsvParser<?, ?> bootstrapParser;
+	private CsvParser<? extends OpenmrsObject, ? extends BaseLineProcessor<? extends OpenmrsObject>> bootstrapParser;
 	
 	public void setBootstrapParser(CsvParser<?, ?> parser) {
 		this.bootstrapParser = parser;
@@ -26,16 +26,16 @@ public class DisplaysCsvParser extends CsvParser<OpenmrsObject, BaseLineProcesso
 	
 	@Override
 	public Domain getDomain() {
-		return Domain.DISPLAYS;
+		return Domain.PRE_DISPLAYS;
 	}
 	
-	/**
+	/*
 	 * In case no UUID can be read from the CSV line this will bootstrap into an object without UUID.
 	 * This will result in an error
 	 */
 	@Override
 	public OpenmrsObject bootstrap(CsvLine line) throws IllegalArgumentException {
-		return isBlank(line.getUuid()) ? null : (OpenmrsObject) bootstrapParser.bootstrap(line);
+		return isBlank(line.getUuid()) ? null : bootstrapParser.bootstrap(line);
 	}
 	
 	@Override

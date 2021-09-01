@@ -15,11 +15,7 @@ public class RolesLoader extends BaseCsvLoader<Role, RolesCsvParser> {
 		this.parser = parser;
 	}
 	
-	/**
-	 * Role is without UUID and hence DisplaysLoader would log an error.
-	 */
 	@Override
-	protected File preload(File file) {
-		return file;
+	protected void preload(File file) {
 	}
 }

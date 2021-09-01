@@ -20,7 +20,7 @@ import org.slf4j.LoggerFactory;
 
 import com.opencsv.CSVReader;
 
-public abstract class CsvParser<T extends OpenmrsObject, P extends BaseLineProcessor<T>> {
+public abstract class CsvParser<T extends OpenmrsObject, LP extends BaseLineProcessor<T>> {
 	
 	protected final Logger log = LoggerFactory.getLogger(CsvParser.class);
 	
@@ -129,7 +129,7 @@ public abstract class CsvParser<T extends OpenmrsObject, P extends BaseLineProce
 		reader = new CSVReader(new InputStreamReader(is, StandardCharsets.UTF_8));
 		headerLine = reader.readNext();
 		
-		String version = P.getVersion(headerLine);
+		String version = LP.getVersion(headerLine);
 		
 		setLineProcessors(version);
 	}

@@ -37,13 +37,28 @@ public abstract class BaseFileLoader extends BaseLoader {
 	/**
 	 * Performs pre-loading operations with the file, such as extracting or computing data from the file
 	 * that needs to be stored in memory rather than being persisted. IMPORTANT: this method will run on
-	 * the file even if the checksum file says that the file should not be processed anymore since its
-	 * outcome is transient (in memory).
+	 * the file even if its checksum file says that the file should not be processed anymore. This is
+	 * because the outcome of the pre-loader is transient by design.
 	 * 
 	 * @param file The file to be pre-loaded.
 	 * @return The original file, untouched.
 	 */
-	protected File preload(File file) {
+	protected void preload(final File file) throws Exception {
+	}
+	
+	private File preload(final File file, boolean doThrow) {
+		try {
+			preload(file);
+		}
+		catch (Exception e) {
+			log.error(e.getMessage());
+			if (doThrow) {
+				log.error(
+				    "The pre-loading of the '" + getDomainName() + "' configuration file was aborted:\n" + file.getPath(),
+				    e);
+				throw new RuntimeException(e);
+			}
+		}
 		return file;
 	}
 	
@@ -53,7 +68,7 @@ public abstract class BaseFileLoader extends BaseLoader {
 		final ConfigDirUtil dirUtil = getDirUtil();
 		
 		dirUtil.getFiles(getFileExtension(), wildcardExclusions).stream().map(f -> toOrderedFile(f)).sorted()
-		        .map(f -> preload(f)).filter(f -> !dirUtil.getChecksumIfChanged(f).isEmpty()).forEach(file -> {
+		        .map(f -> preload(f, doThrow)).filter(f -> !dirUtil.getChecksumIfChanged(f).isEmpty()).forEach(file -> {
 			        
 			        try {
 				        load(file);

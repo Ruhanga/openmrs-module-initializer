@@ -15,11 +15,7 @@ public class PrivilegesLoader extends BaseCsvLoader<Privilege, PrivilegesCsvPars
 		this.parser = parser;
 	}
 	
-	/**
-	 * Privilege is without UUID and hence DisplaysLoader would log an error.
-	 */
 	@Override
-	protected File preload(File file) {
-		return file;
+	protected void preload(File file) {
 	}
 }

@@ -16,7 +16,6 @@ public class ConceptsLoader extends BaseCsvLoader<Concept, ConceptsCsvParser> {
 	}
 	
 	@Override
-	protected File preload(File file) {
-		return file;
+	protected void preload(File file) {
 	}
 }

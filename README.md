@@ -127,7 +127,6 @@ Initializer enables to achieve the OpenMRS backend equivalent of Bahmni Config f
 * On [OpenMRS Talk](https://talk.openmrs.org/)
   * Sign up, start a conversation and ping us with the mention [`@MekomSolutions`](https://talk.openmrs.org/g/MekomSolutions) in your post. 
 * On Slack:
-  
   * Join the [Initializer channel](https://openmrs.slack.com/archives/CPC20CBFH) and ping us with a `@Mekom` mention.
 
 ### Report an issue
@@ -138,6 +137,8 @@ https://github.com/mekomsolutions/openmrs-module-initializer/issues
 ### Releases notes
 
 #### Version 2.2.0
+* Bulk loading of metadata entities i18n display messages specified under `display:xy` headers.
+* (_For devs._) Introduced a pre-loading mechanism to `BaseFileLoader` that allows checksums-independent loading of transient information out of the config files before the actual metadata are loaded.
 * 'program' domain to support `Name` and `Description` headers.
 * CSV parsers to actually fill _new_ objects marked to be retired or voided before creating them as retired/voided entities.
 * Added a runtime property to define the loading startup mode for the activator OpenMRS config loading process.

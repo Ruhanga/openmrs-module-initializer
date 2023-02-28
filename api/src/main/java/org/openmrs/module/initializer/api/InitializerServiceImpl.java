@@ -60,7 +60,7 @@ public class InitializerServiceImpl extends BaseOpenmrsService implements Initia
 	 * 
 	 * @param initializerDao The data access object to use
 	 */
-	public void setInitializerDao(InitializerDAO initializerDAO) {
+	public void setInitializerDAO(InitializerDAO initializerDAO) {
 		this.initializerDAO = initializerDAO;
 	}
 	

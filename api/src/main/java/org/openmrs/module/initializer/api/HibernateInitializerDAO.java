@@ -23,19 +23,26 @@ import org.springframework.stereotype.Component;
  * 
  * @see InitializerService
  */
-@Component
 public class HibernateInitializerDAO implements InitializerDAO {
 	
 	private static final Logger log = LoggerFactory.getLogger(HibernateInitializerDAO.class);
 	
-	@Autowired
 	private SessionFactory sessionFactory;
 	
 	/**
-	 * @see org.openmrs.module.initializer.api.InitializerService#getConceptByName(String)
+	 * Sets the session factory
+	 * 
+	 * @param sessionFactory
+	 */
+	public void setSessionFactory(SessionFactory sessionFactory) {
+		this.sessionFactory = sessionFactory;
+	}
+	
+	/**
+	 * @see org.openmrs.module.initializer.api.InitializerService#getUnretiredConceptByFullySpecifiedName(String)
 	 */
 	@Override
-	public Concept getConceptByName(String name) {
+	public Concept getUnretiredConceptByFullySpecifiedName(String name) {
 		if (StringUtils.isBlank(name)) {
 			return null;
 		}

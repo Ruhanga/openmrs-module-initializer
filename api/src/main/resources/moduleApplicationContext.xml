@@ -42,7 +42,14 @@
         <property name="transactionAttributeSource">
             <ref bean="transactionAttributeSource" />
         </property>
+        <property name="initializerDao">
+            <ref bean="initializerDao" />
+        </property>
     </bean>
+    
+    <bean id="initializerDAO" class="org.openmrs.module.initializer.api.HibernateInitializerDAO">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
     
     <!-- Adds InitializerService to OpenMRS context so it can be accessed
     calling Context.getService(InitializerService.class) -->

@@ -174,7 +174,7 @@ public class Utils {
 		if (instance != null) {
 			return instance;
 		}
-		Concept concept = Context.getService(InitializerService.class).getConceptByName(id);
+		Concept concept = Context.getService(InitializerService.class).getUnretiredConceptByFullySpecifiedName(id);
 		return concept;
 	}
 	

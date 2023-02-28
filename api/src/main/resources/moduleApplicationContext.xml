@@ -37,6 +37,9 @@
         </property>
         <property name="target">
             <bean class="org.openmrs.module.initializer.api.InitializerServiceImpl">
+            	<property name="initializerDAO">
+		            <ref bean="initializerDAO" />
+		        </property>
             </bean>
         </property>
         <property name="preInterceptors">
@@ -44,9 +47,6 @@
         </property>
         <property name="transactionAttributeSource">
             <ref bean="transactionAttributeSource" />
-        </property>
-        <property name="initializerDAO">
-            <ref bean="initializerDAO" />
         </property>
     </bean>
     

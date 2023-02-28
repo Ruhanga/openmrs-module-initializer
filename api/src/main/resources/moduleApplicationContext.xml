@@ -42,8 +42,8 @@
         <property name="transactionAttributeSource">
             <ref bean="transactionAttributeSource" />
         </property>
-        <property name="initializerDao">
-            <ref bean="initializerDao" />
+        <property name="initializerDAO">
+            <ref bean="initializerDAO" />
         </property>
     </bean>
     

@@ -47,7 +47,7 @@ public class InitializerServiceImpl extends BaseOpenmrsService implements Initia
 	
 	private Map<String, Object> keyValueCache = new HashMap<String, Object>();
 
-	private InitializerDAO initializerDao;
+	private InitializerDAO initializerDAO;
 	
 	@Autowired
 	public void setConfig(InitializerConfig cfg) {
@@ -60,8 +60,8 @@ public class InitializerServiceImpl extends BaseOpenmrsService implements Initia
 	 * 
 	 * @param initializerDao The data access object to use
 	 */
-	public void setInitializerDao(InitializerDAO initializerDao) {
-		this.initializerDao = initializerDao;
+	public void setInitializerDao(InitializerDAO initializerDAO) {
+		this.initializerDAO = initializerDAO;
 	}
 	
 	public Path getBasePath() {
@@ -223,6 +223,6 @@ public class InitializerServiceImpl extends BaseOpenmrsService implements Initia
 	 */
 	@Override
 	public Concept getUnretiredConceptByFullySpecifiedName(String name) {
-		return initializerDao.getUnretiredConceptByFullySpecifiedName(name);
+		return initializerDAO.getUnretiredConceptByFullySpecifiedName(name);
 	}
 }

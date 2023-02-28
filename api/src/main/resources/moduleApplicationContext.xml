@@ -25,6 +25,9 @@
 
     <context:component-scan base-package="org.openmrs.module.initializer" />
     
+    <bean id="initializerDAO" class="org.openmrs.module.initializer.api.HibernateInitializerDAO">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
     <!-- Wraps InitializerService methods in DB transactions and OpenMRS interceptors,
     which set audit info like dateCreated, changedBy, etc.-->
     <bean id="initializer.InitializerService"
@@ -46,10 +49,6 @@
             <ref bean="initializerDAO" />
         </property>
     </bean>
-    
-    <bean id="initializerDAO" class="org.openmrs.module.initializer.api.HibernateInitializerDAO">
-		<property name="sessionFactory" ref="sessionFactory"/>
-	</bean>
     
     <!-- Adds InitializerService to OpenMRS context so it can be accessed
     calling Context.getService(InitializerService.class) -->

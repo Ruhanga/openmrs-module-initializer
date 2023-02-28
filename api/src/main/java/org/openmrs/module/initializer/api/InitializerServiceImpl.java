@@ -209,6 +209,10 @@ public class InitializerServiceImpl extends BaseOpenmrsService implements Initia
 		return cfg;
 	}
 	
+	/**
+	 * @see org.openmrs.module.initializer.api.InitializerService#getConceptByName(String)
+	 */
+	@Override
 	public Concept getConceptByName(String name) {
 		return dao.getConceptByName(name);
 	}

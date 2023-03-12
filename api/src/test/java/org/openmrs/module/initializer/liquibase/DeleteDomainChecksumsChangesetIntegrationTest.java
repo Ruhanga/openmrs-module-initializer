@@ -13,6 +13,7 @@ import org.openmrs.module.initializer.DomainBaseModuleContextSensitiveTest;
 import org.openmrs.module.initializer.api.InitializerService;
 import org.openmrs.module.initializer.api.c.ConceptsLoader;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import liquibase.Liquibase;
 import liquibase.database.Database;
@@ -28,6 +29,7 @@ public class DeleteDomainChecksumsChangesetIntegrationTest extends DomainBaseMod
 	private ConceptsLoader loader;
 	
 	@Autowired
+	@Qualifier("initializer.InitializerService")
 	private InitializerService service;
 	
 	@Before

@@ -8,6 +8,7 @@ import org.openmrs.module.initializer.InitializerConfig;
 import org.openmrs.module.initializer.api.ConfigDirUtil;
 import org.openmrs.module.initializer.api.InitializerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 /**
  * Base class for all loaders. In all likelihood you should not subclass this class directly, rather
@@ -19,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public abstract class BaseLoader implements Loader {
 	
 	@Autowired
+	@Qualifier("initializer.InitializerService")
 	protected InitializerService iniz;
 	
 	@Autowired

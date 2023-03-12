@@ -42,6 +42,7 @@ public class JsonKeyValuesLoaderIntegrationTest extends DomainBaseModuleContextS
 	private PersonService ps;
 	
 	@Autowired
+	@Qualifier("initializer.InitializerService")
 	protected InitializerService iniz;
 	
 	@Autowired

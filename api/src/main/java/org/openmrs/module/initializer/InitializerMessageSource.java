@@ -29,6 +29,7 @@ import org.openmrs.util.OpenmrsUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.support.AbstractMessageSource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
@@ -86,6 +87,7 @@ public class InitializerMessageSource extends AbstractMessageSource implements M
 	private final Map<String, String> fallbackLanguages = new ConcurrentHashMap<>();
 	
 	@Autowired
+	@Qualifier("initializer.InitializerService")
 	protected InitializerService iniz;
 	
 	protected CachedMessageSource presentationCache = new CachedMessageSource();
